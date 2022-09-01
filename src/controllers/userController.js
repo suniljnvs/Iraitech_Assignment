@@ -1,4 +1,4 @@
-const userModel = require("../models/userModels");
+const userModels = require("../models/userModels");
 const userProfile = require("../models/userProfile")
 const jwt = require("jsonwebtoken");
 
@@ -125,7 +125,7 @@ const loginUser = async function (req, res) {
             return res.status(400).send({ status: false, message: "Password is required." });
         }
 
-        const matchUser = await userModel.findOne({ email, password });
+        const matchUser = await userModels.findOne({ email, password });
         if (!matchUser) {
             return res.status(404).send({ status: false, message: " Email/Password is Not Matched" });
         }
@@ -152,7 +152,7 @@ const getUserList = async function (req, res) {
     try {
         let requestQuery = req.query;
 
-        let findUser = await userModel.find({ ...requestQuery  })
+        let findUser = await userModels.find({ ...requestQuery  })
 
 
         if (findUser.length == 0)
