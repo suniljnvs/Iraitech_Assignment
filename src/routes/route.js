@@ -2,7 +2,7 @@ const express = require('express');
 const router = express.Router();
 
 
-const { createUser, loginUser , getUserList } = require("../controllers/userController");
+const { createUser, loginUser , getUserList, createUserProfile } = require("../controllers/userController");
 
 
 const { authentication } = require("../middlewares/mid");
@@ -34,7 +34,9 @@ router.post("/register", createUser);
 
 router.post("/login", loginUser);
 
-router.get("/books", authentication, getUserList);
+router.get("/userList", authentication, getUserList);
+
+router.post("/createUserProfile" , createUserProfile)
 
 
 

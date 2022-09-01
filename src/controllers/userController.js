@@ -1,4 +1,5 @@
 const userModel = require("../models/userModels");
+const userProfile = require("../models/userProfile")
 const jwt = require("jsonwebtoken");
 
 const { isValidData, isValidRequestBody, isValidEmail, isValidPhone, isValidName } = require("../utils/validator");
@@ -164,4 +165,59 @@ const getUserList = async function (req, res) {
     }
 }
 
-module.exports = { createUser, loginUser ,getUserList};
+
+const createUserProfile = async function (req, res) {
+    try {
+        const requestBody = req.body;
+
+        if (!isValidRequestBody(requestBody)) {
+            return res.status(400).send({ status: false, message: "No data provided" });
+        }
+
+        
+
+        let files = req.files
+        
+        if(!files || files.length==0){ 
+           return res.status(400).send({ status : false,  msg: "No file found" })
+        }
+
+           //upload to s3 and get the uploaded link
+            // res.send the link back to frontend/postman
+          console.log(files)
+        let uploadedFileURL= await uploadFile( files[0] )
+        console.log(uploadedFileURL)
+        requestBody.bookCover = uploadedFileURL
+         
+
+
+        let { userId } = requestBody;
+
+       
+        if (!isValidData(userId)) {
+            return res.status(400).send({ status: false, message: "userId is Required" });
+        }
+
+        if (!isValidObjectId.test(userId)) {
+            return res.status(400).send({ status: false, message: "userId is Invalid" });
+        }
+
+        let userDetails = await userModel.findById({ _id: userId });
+        if (!userDetails) {
+            return res.status(404).send({ status: false, msg: "User does not exists" });
+        }
+
+        if (userId != req.userId) {
+            return res.status(403).send({ status: false, message: "You Are Not Unauthorized" });
+        }
+x
+
+        let newProfile = await userProfile.create(requestBody)
+        res.status(201).send({ status: true, message: "Profile is created successfully", data: newProfile });
+
+    } catch (error) {
+        res.status(500).send({ status: false, message: error.message });
+    }
+}
+
+module.exports = { createUser, loginUser ,getUserList, createUserProfile};
