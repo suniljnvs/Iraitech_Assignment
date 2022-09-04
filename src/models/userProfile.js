@@ -1,15 +1,15 @@
-let mongoose = require('mongoose');
-const ObjectId = mongoose.Schema.Types.ObjectId;
+// let mongoose = require('mongoose');
+// const ObjectId = mongoose.Schema.Types.ObjectId;
 
-const userProfileSchema=new mongoose.Schema({
+// const userProfileSchema=new mongoose.Schema({
    
-    userId: {
-        type: ObjectId,
-        ref: "User",
-        required: true,
-        trim: true
-    },
+//     userId: {
+//         type: ObjectId,
+//         ref: "User",
+//         required: true,
+//         trim: true
+//     },
    
-}, { timestamps: true });
+// }, { timestamps: true });
 
-module.exports = mongoose.model("userProfile",userProfileSchema); 
+// module.exports = mongoose.model("userProfile",userProfileSchema); 
